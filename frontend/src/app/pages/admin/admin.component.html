@@ -1,0 +1,34 @@
+<div class="container mt-5">
+    <h2>Admin Portal</h2>
+  
+    <input [(ngModel)]="email" placeholder="Enter admin email" class="form-control mb-3" />
+    <button (click)="fetchData()" class="btn btn-primary mb-3">View Submissions</button>
+  
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+  
+    <table *ngIf="users.length" class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th><th>Email</th><th>Phone</th><th>Address</th>
+          <th>Education</th><th>Experience</th><th>IsIdeaSubmitter</th><th>IsFunder</th><th>File</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phone }}</td>
+          <td>{{ user.address }}</td>
+          <td>{{ user.education }}</td>
+          <td>{{ user.experience }}</td>
+          <td>{{ user.isIdeaSubmitter }}</td>
+          <td>{{ user.isFunder }}</td>
+          <td>
+            <a *ngIf="user.fileUrl" [href]="user.fileUrl" target="_blank">View File</a>
+            <span *ngIf="!user.fileUrl">No File</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  

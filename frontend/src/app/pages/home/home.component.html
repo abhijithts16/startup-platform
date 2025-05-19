@@ -1,0 +1,23 @@
+<div class="home-container">
+  <div class="overlay">
+    <div class="content-box text-center text-light">
+      <h1 class="display-4 fw-bold">Welcome to the Startup Initiative</h1>
+      <p class="lead mb-4">
+        We’re building a platform that brings together visionaries and supporters to spark innovation.
+        Whether you have a startup idea or are interested in funding one, this is the place to begin.
+      </p>
+      <p class="mb-5">
+        Submit your idea or show your support as a funder. Our team will review and reach out to you
+        using your contact details. Let’s fuel the next generation of startups—together.
+      </p>
+      <div>
+        <button class="btn btn-primary btn-lg me-3" [routerLink]="['/form', 'idea']">
+          I want to share a startup idea
+        </button>
+        <button class="btn btn-success btn-lg" [routerLink]="['/form', 'fund']">
+          I want to fund a startup
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

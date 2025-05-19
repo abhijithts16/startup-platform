@@ -1,0 +1,26 @@
+<div class="container mt-5">
+    <h2 *ngIf="formType === 'idea'">Submit Your Startup Idea</h2>
+    <h2 *ngIf="formType === 'fund'">Submit Your Interest to Fund</h2>
+  
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+      <div class="form-group mb-2"><input class="form-control" formControlName="name" placeholder="Name" /></div>
+      <div class="form-group mb-2"><input class="form-control" formControlName="phone" placeholder="Phone" /></div>
+      <div class="form-group mb-2"><input class="form-control" formControlName="email" placeholder="Email" /></div>
+      <div class="form-group mb-2"><input class="form-control" formControlName="address" placeholder="Address" /></div>
+      <div class="form-group mb-2"><input class="form-control" formControlName="education" placeholder="Education" /></div>
+      <div class="form-group mb-2"><input class="form-control" formControlName="experience" placeholder="Work Experience" /></div>
+      <div class="form-group mb-2"><input class="form-control" formControlName="background" placeholder="Background" /></div>
+  
+      <div class="form-group mb-2">
+        <textarea class="form-control" formControlName="additionalComments" rows="4" placeholder="Any additional comments"></textarea>
+      </div>
+  
+      <div class="form-group mb-3">
+        <label>Upload a relevant file (optional):</label>
+        <input class="form-control" type="file" (change)="onFileChange($event)" />
+      </div>
+  
+      <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+  </div>
+  

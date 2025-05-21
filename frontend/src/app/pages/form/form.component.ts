@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-form',
@@ -66,10 +67,9 @@ export class FormComponent implements OnInit {
       formData.append('file', this.file);
     }
   
-    this.http.post('http://localhost:5151/api/user/submit', formData).subscribe({
+    this.http.post(`${environment.apiUrl}/api/user/submit`, formData).subscribe({
       next: () => alert('Form submitted successfully!'),
       error: () => alert('Failed to submit form'),
     });
   }
-  
 }

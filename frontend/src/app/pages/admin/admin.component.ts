@@ -25,10 +25,24 @@ export class AdminComponent {
     this.http.post<any[]>(`${environment.apiUrl}/api/user/admin`, formData)
       .subscribe({
         next: (data) => {
-          this.users = data.map(user => ({
-            ...user,
-            fileUrl: user.filePath ? `${environment.apiUrl}/Uploads/${user.filePath}` : null
-          }));
+          this.users = data;
+
+          // Fetch pre-signed URLs for each user
+          this.users.forEach(user => {
+            if (user.filePath) {
+              this.http
+                .get<{ url: string }>(
+                  `${environment.apiUrl}/api/user/file-url?key=${encodeURIComponent(user.filePath)}`
+                )
+                .subscribe({
+                  next: (res) => user.fileUrl = res.url,
+                  error: () => user.fileUrl = null
+                });
+            } else {
+              user.fileUrl = null;
+            }
+          });
+
           this.error = '';
         },
         error: (err) => {

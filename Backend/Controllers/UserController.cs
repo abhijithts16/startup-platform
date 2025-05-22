@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Backend.Data;
 using Backend.Models;
+using Amazon.S3;
+using Amazon.S3.Model;
+using Amazon;
 
 namespace Backend.Controllers
 {
@@ -23,22 +26,15 @@ namespace Backend.Controllers
             try
             {
                 var form = await Request.ReadFormAsync();
-
                 var file = form.Files.GetFile("file");
+
                 string? fileName = null;
 
-                // Handle file upload
+                // Upload to S3 if file exists
                 if (file != null)
                 {
-                    var uploadDir = Path.Combine(_env.ContentRootPath, "Uploads");
-                    if (!Directory.Exists(uploadDir))
-                        Directory.CreateDirectory(uploadDir);
-
-                    fileName = $"{Guid.NewGuid()}_{file.FileName}";
-                    var filePath = Path.Combine(uploadDir, fileName);
-
-                    using var stream = new FileStream(filePath, FileMode.Create);
-                    await file.CopyToAsync(stream);
+                    var uploader = new S3Uploader();
+                    fileName = await uploader.UploadFileAsync(file);
                 }
 
                 // Map form fields to User model
@@ -54,7 +50,7 @@ namespace Backend.Controllers
                     AdditionalComments = form["AdditionalComments"],
                     IsIdeaSubmitter = bool.TryParse(form["IsIdeaSubmitter"], out var idea) && idea,
                     IsFunder = bool.TryParse(form["IsFunder"], out var fund) && fund,
-                    FilePath = fileName ?? string.Empty
+                    FilePath = fileName ?? string.Empty // this is now the S3 key
                 };
 
                 _context.Users.Add(user);
@@ -83,5 +79,32 @@ namespace Backend.Controllers
             var users = _context.Users.ToList(); // Fetch all submissions
             return Ok(users);
         }
+
+        [HttpGet("file-url")]
+        public IActionResult GetFileUrl([FromQuery] string key)
+        {
+            var config = new AmazonS3Config
+            {
+                RegionEndpoint = RegionEndpoint.EUNorth1,
+                ForcePathStyle = true
+            };
+
+            var s3Client = new AmazonS3Client(
+                Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID"),
+                Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY"),
+                config
+            );
+
+            var request = new GetPreSignedUrlRequest
+            {
+                BucketName = "algi-startup-uploads",
+                Key = key,
+                Expires = DateTime.UtcNow.AddMinutes(15)
+            };
+
+            var url = s3Client.GetPreSignedURL(request);
+            return Ok(new { url });
+        }
+
     }
 }

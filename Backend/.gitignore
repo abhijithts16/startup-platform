@@ -1,0 +1,32 @@
+# Ignore sensitive environment files
+.env
+
+# Ignore compiled binaries
+bin/
+obj/
+
+# Ignore user-specific files
+.vscode/
+*.user
+*.suo
+*.http
+
+# Ignore logs
+*.log
+
+# Ignore local database files
+*.db
+
+# Ignore publish output
+publish/
+
+# Ignore docker artifacts
+*.tar
+
+# Optional: exclude user-specific settings
+Properties/launchSettings.json
+
+# Sensitive config
+appsettings.Development.json
+
+

@@ -1,8 +1,11 @@
 using Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Env.Load();
 
 // Add CORS
 builder.Services.AddCors(options =>

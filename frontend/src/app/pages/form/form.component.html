@@ -1,26 +1,90 @@
-<div class="container mt-5">
-    <h2 *ngIf="formType === 'idea'">Submit Your Startup Idea</h2>
-    <h2 *ngIf="formType === 'fund'">Submit Your Interest to Fund</h2>
-  
+<div class="form-wrapper mt-5 position-relative">
+
+  <!-- Close Button -->
+  <button class="close-button" type="button" (click)="closeModal()">×</button>
+
+  <!-- Title -->
+  <h2 class="text-center mb-4">
+    {{ formType === 'idea' ? 'Submit Your Startup Idea' : 'Submit Your Interest to Fund' }}
+  </h2>
+
+  <!-- Form Fields -->
+  <div class="form-box">
     <form [formGroup]="form" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
-      <div class="form-group mb-2"><input class="form-control" formControlName="name" placeholder="Name" /></div>
-      <div class="form-group mb-2"><input class="form-control" formControlName="phone" placeholder="Phone" /></div>
-      <div class="form-group mb-2"><input class="form-control" formControlName="email" placeholder="Email" /></div>
-      <div class="form-group mb-2"><input class="form-control" formControlName="address" placeholder="Address" /></div>
-      <div class="form-group mb-2"><input class="form-control" formControlName="education" placeholder="Education" /></div>
-      <div class="form-group mb-2"><input class="form-control" formControlName="experience" placeholder="Work Experience" /></div>
-      <div class="form-group mb-2"><input class="form-control" formControlName="background" placeholder="Background" /></div>
-  
-      <div class="form-group mb-2">
-        <textarea class="form-control" formControlName="additionalComments" rows="4" placeholder="Any additional comments"></textarea>
-      </div>
-  
-      <div class="form-group mb-3">
-        <label>Upload a relevant file (optional):</label>
-        <input class="form-control" type="file" (change)="onFileChange($event)" />
-      </div>
-  
-      <button class="btn btn-primary" type="submit">Submit</button>
-    </form>
+      <ng-container [ngSwitch]="step">
+        <div *ngSwitchCase="0" class="step">
+          <label>Name</label>
+          <input class="form-control" formControlName="name" (keyup.enter)="nextStep()" autofocus />
+        </div>
+
+        <div *ngSwitchCase="1" class="step">
+          <label>Phone</label>
+          <input class="form-control" formControlName="phone" (keyup.enter)="nextStep()" />
+        </div>
+
+        <div *ngSwitchCase="2" class="step">
+          <label>Email</label>
+          <input class="form-control" formControlName="email" (keyup.enter)="nextStep()" />
+        </div>
+
+        <div *ngSwitchCase="3" class="step">
+          <label>Address</label>
+          <input class="form-control" formControlName="address" (keyup.enter)="nextStep()" />
+        </div>
+
+        <div *ngSwitchCase="4" class="step">
+          <label>Education</label>
+          <input class="form-control" formControlName="education" (keyup.enter)="nextStep()" />
+        </div>
+
+        <div *ngSwitchCase="5" class="step">
+          <label>Work Experience</label>
+          <input class="form-control" formControlName="experience" (keyup.enter)="nextStep()" />
+        </div>
+
+        <div *ngSwitchCase="6" class="step">
+          <label>Background</label>
+          <input class="form-control" formControlName="background" (keyup.enter)="nextStep()" />
+        </div>
+
+        <div *ngSwitchCase="7" class="step">
+          <label>Additional Comments</label>
+          <textarea class="form-control" formControlName="additionalComments" rows="4" (keyup.enter)="nextStep()"></textarea>
+        </div>
+
+        <div *ngSwitchCase="8" class="step">
+          <label>Upload a file (optional)</label>
+          <input class="form-control" type="file" (change)="onFileChange($event)" />
+        </div>
+
+        <div *ngSwitchCase="9" class="text-center">
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </div>
+      </ng-container>
+
+      <!-- Navigation Buttons -->
+      <div class="form-footer mt-4 d-flex justify-content-between align-items-center">
+        <button class="btn btn-secondary" type="button" (click)="prevStep()" [disabled]="step === 0">Back</button>
+
+        
+  <!-- Progress Circle -->
+  <div class="progress-circle-container">
+    <svg class="progress-ring" width="60" height="60">
+      <circle class="progress-ring__background" r="25" cx="30" cy="30" />
+      <circle
+        class="progress-ring__circle"
+        [attr.stroke-dasharray]="circumference"
+        [attr.stroke-dashoffset]="progressOffset"
+        r="25"
+        cx="30"
+        cy="30"
+      />
+    </svg>
+    <div class="progress-number">{{ step + 1 }}</div>
   </div>
   
+        <button class="btn btn-outline-primary" type="button" (click)="nextStep()" *ngIf="step < 9">Next</button>
+      </div>
+    </form>
+  </div>
+</div>

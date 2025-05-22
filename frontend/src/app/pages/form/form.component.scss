@@ -1,0 +1,184 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: transparent;
+  font-family: 'Segoe UI', sans-serif;
+  width: 100%;
+  height: 100%;
+}
+
+.form-wrapper {
+  background: rgba(30, 30, 30, 0.45); // Darker glassmorphism for contrast
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-radius: 20px;
+  padding: 2rem 2.5rem;
+  max-width: 600px;
+  width: 90%;
+  position: relative;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.4s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  color: #f1f5f9; // default text color
+}
+
+h2 {
+  text-align: center;
+  font-weight: 700;
+  color: #f8fafc;
+  margin-bottom: 2rem;
+  font-size: 1.8rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  label {
+    font-weight: 600;
+    color: #e2e8f0;
+    margin-bottom: 0.3rem;
+  }
+}
+
+input[type="text"],
+input[type="email"],
+input[type="file"],
+textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #cbd5e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  background: #ffffff;
+  color: #1a202c;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:focus {
+    border-color: #6366f1;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+  }
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+button {
+  padding: 0.7rem 1.5rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  color: #fff;
+}
+
+button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.btn-primary {
+  background-color: #3b82f6;
+
+  &:hover {
+    background-color: #2563eb;
+    transform: scale(1.03);
+  }
+}
+
+.btn-secondary {
+  background-color: #64748b;
+
+  &:hover {
+    background-color: #475569;
+    transform: scale(1.03);
+  }
+}
+
+.btn-outline-light {
+  background-color: transparent;
+  color: #3b82f6;
+  border: 1px solid #3b82f6;
+
+  &:hover {
+    background-color: #3b82f6;
+    color: white;
+    transform: scale(1.03);
+  }
+}
+
+.form-footer {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.progress-circle-container {
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  position: relative;
+
+  .progress-ring {
+    transform: rotate(-90deg);
+  }
+
+  .progress-ring__background {
+    stroke: #e2e8f0;
+    stroke-width: 5;
+    fill: none;
+  }
+
+  .progress-ring__circle {
+    stroke: #3b82f6;
+    stroke-width: 5;
+    fill: none;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.4s ease;
+  }
+
+  .progress-number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    font-weight: bold;
+    font-size: 1rem;
+    color: #f8fafc;
+  }
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  background: transparent;
+  border: none;
+  color: #e2e8f0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #ef4444;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

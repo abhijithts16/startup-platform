@@ -1,23 +1,54 @@
-<div class="home-container">
-  <div class="overlay">
-    <div class="content-box text-center text-light">
-      <h1 class="display-4 fw-bold">Welcome to the Startup Initiative</h1>
-      <p class="lead mb-4">
-        We’re building a platform that brings together visionaries and supporters to spark innovation.
-        Whether you have a startup idea or are interested in funding one, this is the place to begin.
+<div class="home-wrapper">
+  <!-- Section 1: Idea Submitters -->
+  <section class="home-section text-light text-center">
+    <div class="overlay-box">
+      <h1 class="display-4 fw-bold">Have a Bold Startup Idea?</h1>
+      <p class="lead">We’re on a mission to support passionate founders who dream big.</p>
+      <p>
+        If you have a clear vision, a drive to solve real problems, and need help starting your journey,
+        you're in the right place. We believe in backing people first, then ideas.
       </p>
-      <p class="mb-5">
-        Submit your idea or show your support as a funder. Our team will review and reach out to you
-        using your contact details. Let’s fuel the next generation of startups—together.
+      <button class="btn btn-primary btn-lg mt-3" (click)="openForm('idea')">
+        Share Your Vision With Us
+      </button>
+    </div>
+  </section>
+
+  <!-- Section 2: Funders -->
+  <section class="home-section text-light text-center">
+    <div class="overlay-box">
+      <h2 class="fw-bold">Interested in Funding the Future?</h2>
+      <p class="lead">Your support can launch the next big innovation.</p>
+      <p>
+        We’re building a trusted network of funders who believe in empowering early-stage founders.
+        Join us to connect with curated ideas, make impact-driven investments, and be part of real change.
       </p>
-      <div>
-        <button class="btn btn-primary btn-lg me-3" [routerLink]="['/form', 'idea']">
-          I want to share a startup idea
-        </button>
-        <button class="btn btn-success btn-lg" [routerLink]="['/form', 'fund']">
-          I want to fund a startup
-        </button>
-      </div>
+      <button class="btn btn-success btn-lg mt-3" (click)="openForm('fund')">
+        I Want to Support Innovation
+      </button>
+    </div>
+  </section>
+
+  <!-- Section 3: Our Vision -->
+  <section class="home-section text-light text-center">
+    <div class="overlay-box">
+      <h2 class="fw-bold">Why We're Building This</h2>
+      <p>
+        Starting up is hard — and many game-changing ideas never see the light of day because of a lack of support.
+        At Startup Platform, we aim to remove that barrier by connecting dreamers with doers.
+      </p>
+      <p>
+        Our goal is to foster an ecosystem where passionate individuals get the resources, mentorship, and backing they deserve.
+        Every submission is reviewed carefully — not just for ideas, but for intention, integrity, and impact.
+      </p>
+      <p class="mt-4">🌍 Let’s build the future — together.</p>
+    </div>
+  </section>
+
+  <!-- 🔽 Modal Form (appears when triggered) -->
+  <div class="modal-backdrop" *ngIf="showForm">
+    <div class="modal-content">
+      <app-form [formType]="selectedFormType" (close)="closeForm()"></app-form>
     </div>
   </div>
 </div>

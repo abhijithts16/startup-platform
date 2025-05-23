@@ -28,29 +28,71 @@ namespace Backend.Controllers
                 var form = await Request.ReadFormAsync();
                 var file = form.Files.GetFile("file");
 
-                string? fileName = null;
+                // Read form values
+                var name = form["Name"].ToString().Trim();
+                var phone = form["Phone"].ToString().Trim();
+                var email = form["Email"].ToString().Trim();
+                var address = form["Address"].ToString().Trim();
+                var education = form["Education"].ToString().Trim();
+                var experience = form["Experience"].ToString().Trim();
+                var background = form["Background"].ToString().Trim();
+                var additionalComments = form["AdditionalComments"].ToString();
 
-                // Upload to S3 if file exists
+                // Validation (same as frontend)
+                if (string.IsNullOrWhiteSpace(name) || name.Length < 2)
+                    return BadRequest(new { error = "Name must be at least 2 characters." });
+
+                if (string.IsNullOrWhiteSpace(phone) ||
+                    !System.Text.RegularExpressions.Regex.IsMatch(phone, @"^\+(?:[0-9] ?){6,14}[0-9]$"))
+                    return BadRequest(new { error = "Phone number must include a valid country code." });
+
+                if (string.IsNullOrWhiteSpace(email) ||
+                    !System.Net.Mail.MailAddress.TryCreate(email, out _))
+                    return BadRequest(new { error = "Email format is invalid." });
+
+                if (string.IsNullOrWhiteSpace(address) || address.Length < 5)
+                    return BadRequest(new { error = "Address must be at least 5 characters long." });
+
+                if (string.IsNullOrWhiteSpace(education))
+                    return BadRequest(new { error = "Education is required." });
+
+                if (string.IsNullOrWhiteSpace(experience))
+                    return BadRequest(new { error = "Experience is required." });
+
+                if (string.IsNullOrWhiteSpace(background) || background.Length < 10)
+                    return BadRequest(new { error = "Background must be at least 10 characters." });
+
+                // File validation (optional)
+                string? fileName = null;
                 if (file != null)
                 {
+                    var allowedExtensions = new[] { ".pdf", ".doc", ".docx" };
+                    var extension = Path.GetExtension(file.FileName).ToLower();
+
+                    if (!allowedExtensions.Contains(extension))
+                        return BadRequest(new { error = "File must be a PDF or Word document." });
+
+                    if (file.Length > 5 * 1024 * 1024)
+                        return BadRequest(new { error = "File size cannot exceed 5MB." });
+
                     var uploader = new S3Uploader();
                     fileName = await uploader.UploadFileAsync(file);
                 }
 
-                // Map form fields to User model
+                // Map to entity
                 var user = new User
                 {
-                    Name = form["Name"],
-                    Phone = form["Phone"],
-                    Email = form["Email"],
-                    Address = form["Address"],
-                    Education = form["Education"],
-                    Experience = form["Experience"],
-                    Background = form["Background"],
-                    AdditionalComments = form["AdditionalComments"],
+                    Name = name,
+                    Phone = phone,
+                    Email = email,
+                    Address = address,
+                    Education = education,
+                    Experience = experience,
+                    Background = background,
+                    AdditionalComments = additionalComments,
                     IsIdeaSubmitter = bool.TryParse(form["IsIdeaSubmitter"], out var idea) && idea,
                     IsFunder = bool.TryParse(form["IsFunder"], out var fund) && fund,
-                    FilePath = fileName ?? string.Empty // this is now the S3 key
+                    FilePath = fileName ?? string.Empty
                 };
 
                 _context.Users.Add(user);
@@ -61,13 +103,20 @@ namespace Backend.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
-                return BadRequest(new { error = ex.Message });
+                return BadRequest(new { error = "Something went wrong while processing your request." });
             }
         }
+
 
         [HttpPost("admin")]
         public IActionResult GetSubmissions([FromForm] string email)
         {
+
+            if (string.IsNullOrWhiteSpace(email))
+    {
+        return BadRequest(new { error = "Email is required." });
+    }
+    
             // Replace with your admin email
             var allowedAdminEmail = "admin@example.com";
 
@@ -83,6 +132,11 @@ namespace Backend.Controllers
         [HttpGet("file-url")]
         public IActionResult GetFileUrl([FromQuery] string key)
         {
+            if (string.IsNullOrWhiteSpace(key))
+    {
+        return BadRequest(new { error = "File key is required." });
+    }
+
             var config = new AmazonS3Config
             {
                 RegionEndpoint = RegionEndpoint.EUNorth1,

@@ -19,6 +19,15 @@ export class AdminComponent {
   constructor(private http: HttpClient) {}
 
   fetchData() {
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!this.email || !emailPattern.test(this.email)) {
+    this.error = 'Please enter a valid admin email address.';
+    this.users = [];
+    return;
+  }
+  
     const formData = new FormData();
     formData.append('email', this.email);
 

@@ -20,8 +20,5 @@ WORKDIR /app
 # Copy published app
 COPY --from=build /app/publish .
 
-# ✅ Create the Uploads directory
-RUN mkdir -p /app/Uploads
-
 # Run the application
 ENTRYPOINT ["dotnet", "Backend.dll"]

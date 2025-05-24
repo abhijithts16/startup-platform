@@ -12,12 +12,10 @@ namespace Backend.Controllers
     public class UserController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
-        private readonly IWebHostEnvironment _env;
 
-        public UserController(ApplicationDbContext context, IWebHostEnvironment env)
+        public UserController(ApplicationDbContext context)
         {
             _context = context;
-            _env = env;
         }
 
         [HttpPost("submit")]
@@ -106,59 +104,5 @@ namespace Backend.Controllers
                 return BadRequest(new { error = "Something went wrong while processing your request." });
             }
         }
-
-
-        [HttpPost("admin")]
-        public IActionResult GetSubmissions([FromForm] string email)
-        {
-
-            if (string.IsNullOrWhiteSpace(email))
-    {
-        return BadRequest(new { error = "Email is required." });
-    }
-    
-            // Replace with your admin email
-            var allowedAdminEmail = "admin@example.com";
-
-            if (email != allowedAdminEmail)
-            {
-                return Unauthorized(new { message = "Access denied" });
-            }
-
-            var users = _context.Users.ToList(); // Fetch all submissions
-            return Ok(users);
-        }
-
-        [HttpGet("file-url")]
-        public IActionResult GetFileUrl([FromQuery] string key)
-        {
-            if (string.IsNullOrWhiteSpace(key))
-    {
-        return BadRequest(new { error = "File key is required." });
-    }
-
-            var config = new AmazonS3Config
-            {
-                RegionEndpoint = RegionEndpoint.EUNorth1,
-                ForcePathStyle = true
-            };
-
-            var s3Client = new AmazonS3Client(
-                Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID"),
-                Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY"),
-                config
-            );
-
-            var request = new GetPreSignedUrlRequest
-            {
-                BucketName = "algi-startup-uploads",
-                Key = key,
-                Expires = DateTime.UtcNow.AddMinutes(15)
-            };
-
-            var url = s3Client.GetPreSignedURL(request);
-            return Ok(new { url });
-        }
-
-    }
+}
 }

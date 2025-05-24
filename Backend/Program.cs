@@ -9,8 +9,6 @@ using DotNetEnv;
 var builder = WebApplication.CreateBuilder(args);
 
 DotNetEnv.Env.Load();
-Console.WriteLine("Admin Hash: " + Environment.GetEnvironmentVariable("ADMIN_PASSWORD_HASH"));
-
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>

@@ -23,6 +23,16 @@
     <!-- ✅ Submissions -->
     <div *ngIf="loggedIn">
       <button class="btn btn-secondary mb-4" (click)="logout()">Logout</button>
+
+      <!-- Toast Notification -->
+<div *ngIf="toastMessage" class="toast align-items-center show position-fixed top-0 end-0 m-3 {{ toastClass }}" role="alert" style="z-index: 9999;">
+    <div class="d-flex">
+      <div class="toast-body">
+        {{ toastMessage }}
+      </div>
+    </div>
+  </div>
+  
   
       <!-- 🚀 Idea Submitters -->
       <h4 class="mb-3">🚀 Startup Ideas Shared</h4>
@@ -30,7 +40,7 @@
         <thead>
           <tr>
             <th>Name</th><th>Email</th><th>Phone</th><th>Address</th>
-            <th>Education</th><th>Experience</th><th>File</th>
+            <th>Education</th><th>Experience</th><th>File</th><th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -45,6 +55,9 @@
               <a *ngIf="user.fileUrl" [href]="user.fileUrl" target="_blank">View</a>
               <span *ngIf="!user.fileUrl">—</span>
             </td>
+            <td>
+                <button class="btn btn-sm btn-danger" (click)="deleteUser(user.id)">Delete</button>
+              </td>
           </tr>
         </tbody>
       </table>
@@ -55,7 +68,7 @@
         <thead>
           <tr>
             <th>Name</th><th>Email</th><th>Phone</th><th>Address</th>
-            <th>Education</th><th>Experience</th><th>File</th>
+            <th>Education</th><th>Experience</th><th>File</th><th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -70,6 +83,9 @@
               <a *ngIf="user.fileUrl" [href]="user.fileUrl" target="_blank">View</a>
               <span *ngIf="!user.fileUrl">—</span>
             </td>
+            <td>
+                <button class="btn btn-sm btn-danger" (click)="deleteUser(user.id)">Delete</button>
+              </td>
           </tr>
         </tbody>
       </table>

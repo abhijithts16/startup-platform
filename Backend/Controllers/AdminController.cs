@@ -35,7 +35,7 @@ namespace Backend.Controllers
             if (email != adminEmail)
                 return Unauthorized(new { error = "Invalid email" });
 
-                if (!BCrypt.Net.BCrypt.Verify(password, adminPasswordHash))
+            if (!BCrypt.Net.BCrypt.Verify(password, adminPasswordHash))
                 return Unauthorized(new { error = "Invalid credentials" });
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -102,6 +102,50 @@ namespace Backend.Controllers
             var url = s3Client.GetPreSignedURL(request);
             return Ok(new { url });
         }
+
+        [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteSubmission(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                return NotFound(new { message = "User not found." });
+
+            // If file exists, delete from S3
+            if (!string.IsNullOrWhiteSpace(user.FilePath))
+            {
+                var s3Client = new AmazonS3Client(
+                    Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID"),
+                    Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY"),
+                    new AmazonS3Config
+                    {
+                        RegionEndpoint = RegionEndpoint.EUNorth1,
+                        ForcePathStyle = true
+                    });
+
+                try
+                {
+                    var deleteRequest = new DeleteObjectRequest
+                    {
+                        BucketName = "algi-startup-uploads",
+                        Key = user.FilePath
+                    };
+
+                    await s3Client.DeleteObjectAsync(deleteRequest);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to delete file from S3: {ex.Message}");
+                    // Continue even if file delete fails
+                }
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Submission deleted successfully." });
+        }
+
 
     }
 }

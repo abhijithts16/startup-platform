@@ -107,4 +107,40 @@ export class AdminComponent {
         },
       });
   }
+
+  deleteUser(userId: number) {
+    if (!confirm('Are you sure you want to delete this submission?')) return;
+  
+    const token = localStorage.getItem('adminToken');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+    this.http.delete(`${environment.apiUrl}/api/admin/delete/${userId}`, { headers })
+      .subscribe({
+        next: () => {
+          // Remove from UI
+          this.fetchData();
+  
+          // Show toast
+          this.showToast('Submission deleted successfully.');
+        },
+        error: () => {
+          this.showToast('Failed to delete the submission.', true);
+        }
+      });
+  }
+  
+  // Toast utility
+  toastMessage = '';
+  toastClass = '';
+  
+  showToast(message: string, isError = false) {
+    this.toastMessage = message;
+    this.toastClass = isError ? 'bg-danger text-white' : 'bg-success text-white';
+  
+    setTimeout(() => {
+      this.toastMessage = '';
+    }, 3000);
+  }
+  
+  
 }

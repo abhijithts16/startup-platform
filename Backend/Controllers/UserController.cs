@@ -25,8 +25,6 @@ namespace Backend.Controllers
             {
                 var form = await Request.ReadFormAsync();
                 var file = form.Files.GetFile("file");
-
-                // Read form values
                 var name = form["Name"].ToString().Trim();
                 var phone = form["Phone"].ToString().Trim();
                 var email = form["Email"].ToString().Trim();
@@ -36,7 +34,6 @@ namespace Backend.Controllers
                 var background = form["Background"].ToString().Trim();
                 var additionalComments = form["AdditionalComments"].ToString();
 
-                // Validation (same as frontend)
                 if (string.IsNullOrWhiteSpace(name) || name.Length < 2)
                     return BadRequest(new { error = "Name must be at least 2 characters." });
 
@@ -77,7 +74,6 @@ namespace Backend.Controllers
                     fileName = await uploader.UploadFileAsync(file);
                 }
 
-                // Map to entity
                 var user = new User
                 {
                     Name = name,

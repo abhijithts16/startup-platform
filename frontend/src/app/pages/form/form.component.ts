@@ -53,7 +53,6 @@ export class FormComponent implements OnInit {
   }
 
   ngOnInit() {
-    // formType is received via @Input from HomeComponent
   }
 
   onFileChange(event: any) {
@@ -121,7 +120,7 @@ export class FormComponent implements OnInit {
       .subscribe({
         next: () => {
           alert('Form submitted successfully!');
-          this.close.emit(); // close modal after submit
+          this.close.emit();
         },
         error: () => alert('Failed to submit form'),
       });
@@ -136,13 +135,10 @@ export class FormComponent implements OnInit {
   }
 
   isNextDisabled(): boolean {
-    // Skip validation on final step
     if (this.step === 9) return false;
   
-    // File step: allow next unless there's an error
     if (this.step === 8) return !!this.fileError;
   
-    // Regular form field validation
     return !this.getStepControl()?.valid;
   }
   

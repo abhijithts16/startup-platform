@@ -1,94 +1,102 @@
 <div class="container mt-5">
     <h2>Admin Portal</h2>
-  
-    <!-- 🔐 Login Form -->
-    <div *ngIf="!loggedIn">
-      <input
-        [(ngModel)]="email"
-        placeholder="Admin Email"
-        class="form-control mb-2"
-      />
-      <input
-        [(ngModel)]="password"
-        type="password"
-        placeholder="Password"
-        class="form-control mb-3"
-      />
-      <button (click)="login()" class="btn btn-primary mb-3">Login</button>
-    </div>
-  
-    <!-- ❌ Error -->
-    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-  
-    <!-- ✅ Submissions -->
-    <div *ngIf="loggedIn">
-      <button class="btn btn-secondary mb-4" (click)="logout()">Logout</button>
 
-      <!-- Toast Notification -->
-<div *ngIf="toastMessage" class="toast align-items-center show position-fixed top-0 end-0 m-3 {{ toastClass }}" role="alert" style="z-index: 9999;">
-    <div class="d-flex">
-      <div class="toast-body">
-        {{ toastMessage }}
-      </div>
+    <div *ngIf="!loggedIn">
+        <input [(ngModel)]="email" placeholder="Admin Email" class="form-control mb-2" />
+        <input [(ngModel)]="password" type="password" placeholder="Password" class="form-control mb-3" />
+        <button (click)="login()" class="btn btn-primary mb-3">Login</button>
     </div>
-  </div>
-  
-  
-      <!-- 🚀 Idea Submitters -->
-      <h4 class="mb-3">🚀 Startup Ideas Shared</h4>
-      <table *ngIf="ideaSubmitters.length" class="table table-bordered table-sm">
-        <thead>
-          <tr>
-            <th>Name</th><th>Email</th><th>Phone</th><th>Address</th>
-            <th>Education</th><th>Experience</th><th>File</th><th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of ideaSubmitters">
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.phone }}</td>
-            <td>{{ user.address }}</td>
-            <td>{{ user.education }}</td>
-            <td>{{ user.experience }}</td>
-            <td>
-              <a *ngIf="user.fileUrl" [href]="user.fileUrl" target="_blank">View</a>
-              <span *ngIf="!user.fileUrl">—</span>
-            </td>
-            <td>
-                <button class="btn btn-sm btn-danger" (click)="deleteUser(user.id)">Delete</button>
-              </td>
-          </tr>
-        </tbody>
-      </table>
-  
-      <!-- 💰 Funder Submitters -->
-      <h4 class="mt-5 mb-3">💰 Interested Funders</h4>
-      <table *ngIf="funderSubmitters.length" class="table table-bordered table-sm">
-        <thead>
-          <tr>
-            <th>Name</th><th>Email</th><th>Phone</th><th>Address</th>
-            <th>Education</th><th>Experience</th><th>File</th><th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of funderSubmitters">
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.phone }}</td>
-            <td>{{ user.address }}</td>
-            <td>{{ user.education }}</td>
-            <td>{{ user.experience }}</td>
-            <td>
-              <a *ngIf="user.fileUrl" [href]="user.fileUrl" target="_blank">View</a>
-              <span *ngIf="!user.fileUrl">—</span>
-            </td>
-            <td>
-                <button class="btn btn-sm btn-danger" (click)="deleteUser(user.id)">Delete</button>
-              </td>
-          </tr>
-        </tbody>
-      </table>
+
+    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+    <div *ngIf="loggedIn">
+        <button class="btn btn-secondary mb-4" (click)="logout()">Logout</button>
+
+        <div *ngIf="toastMessage" class="toast align-items-center show position-fixed top-0 end-0 m-3 {{ toastClass }}"
+            role="alert" style="z-index: 9999;">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ toastMessage }}
+                </div>
+            </div>
+        </div>
+
+        <h4 class="mb-3">🚀 Startup Ideas Shared</h4>
+        <table *ngIf="ideaSubmitters.length" class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Submitted At</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Education</th>
+                    <th>Experience</th>
+                    <th>Background</th>
+                    <th>AdditionalComments</th>
+                    <th>File</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of ideaSubmitters">
+                    <td>{{ user.submittedAt | date: 'medium' }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>{{ user.address }}</td>
+                    <td>{{ user.education }}</td>
+                    <td>{{ user.experience }}</td>
+                    <td>{{ user.background }}</td>
+                    <td>{{ user.additionalComments }}</td>
+                    <td>
+                        <a *ngIf="user.fileUrl" [href]="user.fileUrl" target="_blank">View</a>
+                        <span *ngIf="!user.fileUrl">—</span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" (click)="deleteUser(user.id)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4 class="mt-5 mb-3">💰 Interested Funders</h4>
+        <table *ngIf="funderSubmitters.length" class="table table-bordered table-sm">
+            <thead>
+                <tr>
+                    <th>Submitted At</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Education</th>
+                    <th>Experience</th>
+                    <th>Background</th>
+                    <th>AdditionalComments</th>
+                    <th>File</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of funderSubmitters">
+                    <td>{{ user.submittedAt | date: 'medium' }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.phone }}</td>
+                    <td>{{ user.address }}</td>
+                    <td>{{ user.education }}</td>
+                    <td>{{ user.experience }}</td>
+                    <td>{{ user.background }}</td>
+                    <td>{{ user.additionalComments }}</td>
+                    <td>
+                        <a *ngIf="user.fileUrl" [href]="user.fileUrl" target="_blank">View</a>
+                        <span *ngIf="!user.fileUrl">—</span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" (click)="deleteUser(user.id)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-  </div>
-  
+</div>

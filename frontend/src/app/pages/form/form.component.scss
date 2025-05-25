@@ -9,7 +9,7 @@
 }
 
 .form-wrapper {
-  background: rgba(30, 30, 30, 0.45); // Darker glassmorphism for contrast
+  background: rgba(30, 30, 30, 0.45);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   border-radius: 20px;
@@ -29,6 +29,7 @@ h2 {
   color: #f8fafc;
   margin-bottom: 2rem;
   font-size: 1.8rem;
+  padding-right: 2rem;
 }
 
 .step {
@@ -147,9 +148,9 @@ button:disabled {
 
   .progress-number {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -55%);
+    top: 57%;
+    left: 58%;
+    transform: translate(-50%, -50%);
     font-weight: bold;
     font-size: 1rem;
     color: #f8fafc;
@@ -166,6 +167,7 @@ button:disabled {
   color: #e2e8f0;
   cursor: pointer;
   transition: color 0.2s ease;
+  z-index: 10;
 
   &:hover {
     color: #ef4444;

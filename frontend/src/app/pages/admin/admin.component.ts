@@ -117,10 +117,7 @@ export class AdminComponent {
     this.http.delete(`${environment.apiUrl}/api/admin/delete/${userId}`, { headers })
       .subscribe({
         next: () => {
-          // Remove from UI
           this.fetchData();
-  
-          // Show toast
           this.showToast('Submission deleted successfully.');
         },
         error: () => {
@@ -128,8 +125,6 @@ export class AdminComponent {
         }
       });
   }
-  
-  // Toast utility
   toastMessage = '';
   toastClass = '';
   

@@ -30,7 +30,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.AllowAnyOrigin() //policy.WithOrigins("https://startup-platform-9jbk.onrender.com")
+        policy.WithOrigins("https://startup-platform-9jbk.onrender.com") //policy.AllowAnyOrigin()
               .AllowAnyHeader()
               .AllowAnyMethod();
     });

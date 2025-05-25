@@ -1,5 +1,4 @@
 <div class="home-wrapper">
-  <!-- Section 1: Idea Submitters -->
   <section class="home-section text-light text-center">
     <div class="overlay-box">
       <h1 class="display-4 fw-bold">Have a Bold Startup Idea?</h1>
@@ -14,7 +13,6 @@
     </div>
   </section>
 
-  <!-- Section 2: Funders -->
   <section class="home-section text-light text-center">
     <div class="overlay-box">
       <h2 class="fw-bold">Interested in Funding the Future?</h2>
@@ -29,7 +27,6 @@
     </div>
   </section>
 
-  <!-- Section 3: Our Vision -->
   <section class="home-section text-light text-center">
     <div class="overlay-box">
       <h2 class="fw-bold">Why We're Building This</h2>
@@ -45,7 +42,6 @@
     </div>
   </section>
 
-  <!-- 🔽 Modal Form (appears when triggered) -->
   <div class="modal-backdrop" *ngIf="showForm">
     <div class="modal-content">
       <app-form [formType]="selectedFormType" (close)="closeForm()"></app-form>

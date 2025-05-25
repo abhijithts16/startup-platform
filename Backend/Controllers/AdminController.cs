@@ -136,7 +136,6 @@ namespace Backend.Controllers
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Failed to delete file from S3: {ex.Message}");
-                    // Continue even if file delete fails
                 }
             }
 

@@ -14,5 +14,7 @@ namespace Backend.Models
         public bool IsIdeaSubmitter { get; set; }
         public bool IsFunder { get; set; }
         public string FilePath { get; set; }
+        public DateTime SubmittedAt { get; set; } = DateTime.UtcNow;
+
     }
 }
